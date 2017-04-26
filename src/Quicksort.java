@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 // File: Quicksort.java
 // A Java application to illustrate the use of a quicksort. Part of this work
 // is left as an exercise for students using "Data Structures and Other
@@ -106,11 +109,40 @@ public class Quicksort
    //   -- each element after data[pivot index] is > the pivot.
    {
       
-	   //TODO
-	   
-      System.exit(0);
-      
-      return 0; 
+	   int pivot = data[first];
+	   int tooBigIndex = first + 1;//index of element after pivot
+	   int tooSmallIndex = first + n - 1;//index of last element
+
+	   //repeat until the 2 indexes cross each other
+		do {
+		   //tooBigIndex not beyond final index of the partitioned array and
+		   //data at index is less than or equal to pivot
+		   while (
+				   (tooBigIndex <= data.length) 
+				   && (data[tooBigIndex] <= pivot)) {
+			   tooBigIndex = tooBigIndex + 1;//move to next index
+		   }
+		   
+		   //data at index is greater than pivot
+		   while (data[tooSmallIndex] > pivot) {
+			   tooSmallIndex = tooSmallIndex - 1;//move to previous index
+		   }
+		   //swap values
+		   if (tooBigIndex < tooSmallIndex) {
+			  int tmp1 = data[tooSmallIndex];
+			  int tmp2 = data[tooBigIndex];
+			  data[tooSmallIndex] = tmp2;
+			  data[tooBigIndex] = tmp1;
+		   }			
+		} while ((tooBigIndex <= tooSmallIndex));
+	   //updating pivot position @data[tooSmallIndex]
+	   //update data first, should be a value less than or equal to pivot
+	   data[first] = data[tooSmallIndex];
+	   //set
+	   data[tooSmallIndex] = pivot;
+	   //index where the pivot is
+	   return tooSmallIndex;
+
    }
 
 }
