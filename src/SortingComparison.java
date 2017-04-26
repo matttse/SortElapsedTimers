@@ -2,7 +2,8 @@
 public class SortingComparison {
 
 	public static void main(String[] args) {
-		int[] data = new int[10];
+		int numEle = 100;
+		int[] data = new int[numEle];
 		int upper = 1000000;
 		int lower = 1;
 		long startTime;
@@ -14,15 +15,15 @@ public class SortingComparison {
 			System.out.print("\t");
 		}			
 		System.out.println("\n");
-		int[] selectData = new int[10];
+		int[] selectData = new int[numEle];
 		System.arraycopy(data, 0, selectData, 0, data.length);
-		int[] insertData = new int[10];
+		int[] insertData = new int[numEle];
 		System.arraycopy(data, 0, insertData, 0, data.length);
-		int[] mergeData = new int[10];
+		int[] mergeData = new int[numEle];
 		System.arraycopy(data, 0, mergeData, 0, data.length);
-		int[] quickData = new int[10];
+		int[] quickData = new int[numEle];
 		System.arraycopy(data, 0, quickData, 0, data.length);
-		int[ ] heapData = new int[10];
+		int[ ] heapData = new int[numEle];
 		System.arraycopy(data, 0, heapData, 0, data.length);
 		
 		//selection sort
