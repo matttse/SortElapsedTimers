@@ -110,6 +110,28 @@ public class Heapsort
 		   }
 	   }
    }
+   private static int leftChild(int k){
+	   return 2*k+1;
+   }
+   private static int rightChild(int k){
+	   return 2*k+2;
+   }
+   private static int parent(int k) {
+	   // Precondition: k > 0
+	   // Postcondition: the method assumes that k is the index of an array
+	   // element, where the array represents a complete binary tree. the return
+	   // value is the index of the parent of node k
+	   
+	   return (k-1/2);
+   }
+   private static boolean isLeaf(int[] data, int n, int current) {
+		
+		if (leftChild(current) >= n && rightChild(current) >= n)
+			return true;
+		
+		return false;
+		
+	}
 
    private static void reheapifyDown(int[ ] data, int n)
    // Precondition: n > 0, and data is an array with at least n elements. These
@@ -120,36 +142,42 @@ public class Heapsort
    {
 	   //reheapification downward (for a heap where the root is out of place)
 	   int current;//index of the note that's moving down
-	   int bigChildIndex = 0;//index of current's larger child
+	   int bigChildIndex;//index of current's larger child
 	   boolean heapOK;//will become true when heap is correct
-   
+	   
 	   current = 0;
-	   heapOK = false; 
-
-	   while ((!heapOK) && (current != data.length)) {
+	   heapOK = false;
+	   //heapOK is false and
+	   //current node is not a leaf
+	   while ((!heapOK) && (rightChild(current) < n)) {
 		   //set bigChildIndex to be the index of larger child of the current
 		   //node. (if there is only 1 child, then bigChildIndex will be set to
 		   //the index of this 1 child)
-		   if (data[bigChildIndex] > data[bigChildIndex + 1]) {
-			   bigChildIndex++;			  
+		   int child1 = data[rightChild(current)];
+		   if (leftChild(current) < n) {
+			   int child2 = data[leftChild(current)];
+			   if (child1 > child2){
+				   bigChildIndex = rightChild(current);
+			   } else {
+				   bigChildIndex = leftChild(current);
+			   }
+		   } else { 
+			   bigChildIndex = 2*current+1;
 		   }
-			   
+		   
 		   if (data[current] < data[bigChildIndex]) {
 			   //swap data[current] and data[bigChildIndex}
+			   int tmp1 = data[bigChildIndex];
+			   int tmp2 = data[current];
+			   data[bigChildIndex] = tmp2;
+			   data[current] = tmp1;
+			   
 			   current = bigChildIndex;
 		   } else {
 			   heapOK = true;
 		   }
-		}
+	   }
    }
    
-   private static int parent(int k) {
-	   // Precondition: k > 0
-	   // Postcondition: the method assumes that k is the index of an array
-	   // element, where the array represents a complete binary tree. the return
-	   // value is the index of the parent of node k
-	   
-	   return (k-1/2);
-   }
 }
 
