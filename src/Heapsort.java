@@ -96,8 +96,22 @@ public class Heapsort
    // Postcondition: The elements of data have been rearranged so that the
    // complete binary tree represented by this array is a heap.
    {      
-	   //TODO
-      System.exit(0);
+	   int k;
+	   for (int i = 0; i < n; i++) {
+		   //the index of the new element
+		   k = i;
+		   //data[k] not the root and
+		   //data[k] bigger than its parent
+		   while ((data[k] != data[0]) && (data[k] > parent(k))) {
+			   //swap data[k] with its parent
+			   int tmp1 = data[k];
+			   int tmp2 = data[parent(k)];
+			   data[k] = tmp2;
+			   data[parent(k)] = tmp1;
+			   //reset k to the index of its parent
+			   k = parent(k);
+		   }
+	   }
    }
 
    private static void reheapifyDown(int[ ] data, int n)
@@ -107,8 +121,37 @@ public class Heapsort
    // Postcondition: The data values have been rearranged so that the first
    // n elements of data now form a heap.
    {
+	   //reheapification downward (for a heap where the root is out of place)
+	   int current;//index of the note that's moving down
+	   int bigChildIndex;//index of current's larger child
+	   boolean heapOK;//will become true when heap is correct
+   
+	   current = 0;
+	   heapOK = false;
+	   int heapInd = data[n];
+   
 	   //TODO
-      System.exit(0);
+//	   while ((!heapOK) && (current != leaf)) {
+//			   //set bigChildIndex to be the index of larger child of the current
+//			   //node. (if there is only 1 child, then bigChildIndex will be set to
+//			   //the index of this 1 child)
+//			   
+//			   if (data[current] < data[bigChildIndex]) {
+//				   //swap data[current] and data[bigChildIndex
+//				   current = bigChildIndex;
+//			   } else {
+//				   heapOK = true;
+//			   }
+//		}
+   }
+   
+   private static int parent(int k) {
+	   // Precondition: k > 0
+	   // Postcondition: the method assumes that k is the index of an array
+	   // element, where the array represents a complete binary tree. the return
+	   // value is the index of the parent of node k
+	   
+	   return (k-1/2);
    }
 }
 

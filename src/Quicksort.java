@@ -117,8 +117,7 @@ public class Quicksort
 		do {
 		   //tooBigIndex not beyond final index of the partitioned array and
 		   //data at index is less than or equal to pivot
-		   while (
-				   (tooBigIndex <= data.length) 
+		   while ((tooBigIndex < data.length) 
 				   && (data[tooBigIndex] <= pivot)) {
 			   tooBigIndex = tooBigIndex + 1;//move to next index
 		   }
