@@ -96,8 +96,7 @@ public class Heapsort
    // Postcondition: The elements of data have been rearranged so that the
    // complete binary tree represented by this array is a heap.
    {      
-      System.err.println("The student needs to implement the makeHeap and");
-      System.err.println("reheapifyDown methods before the heapsort can be used.");
+	   //TODO
       System.exit(0);
    }
 
@@ -108,8 +107,7 @@ public class Heapsort
    // Postcondition: The data values have been rearranged so that the first
    // n elements of data now form a heap.
    {
-      System.err.println("The student needs to implement the makeHeap and");
-      System.err.println("reheapifyDown methods before the heapsort can be used.");
+	   //TODO
       System.exit(0);
    }
 }

@@ -106,8 +106,8 @@ public class Quicksort
    //   -- each element after data[pivot index] is > the pivot.
    {
       
-      System.err.println("The student needs to implement the partition method");
-      System.err.println("before the quicksort can be used.");
+	   //TODO
+	   
       System.exit(0);
       
       return 0; 
