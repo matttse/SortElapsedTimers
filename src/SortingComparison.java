@@ -2,7 +2,7 @@
 public class SortingComparison {
 
 	public static void main(String[] args) {
-		int numEle = 100;
+		int numEle = 10;
 		int[] data = new int[numEle];
 		int upper = 1000000;
 		int lower = 1;
@@ -12,7 +12,10 @@ public class SortingComparison {
 		for (int i = 0; i < data.length; i++) {
 			data[i] = (int) (Math.random() * (upper - lower) + lower);
 			System.out.print(data[i]);
-			System.out.print("\t");
+			System.out.print("\t");	
+			if (i%2 == 1){
+				System.out.print("\n");	
+			}
 		}			
 		System.out.println("\n");
 		int[] selectData = new int[numEle];
