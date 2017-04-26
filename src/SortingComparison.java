@@ -68,7 +68,7 @@ public class SortingComparison {
 		//heap sort
 
 		startTime = System.currentTimeMillis();
-//		Heapsort.heapsort(heapData, heapData.length);
+		Heapsort.heapsort(heapData, heapData.length);
 		endTime = System.currentTimeMillis();
 		elapsedTime = endTime - startTime;
 		System.out.print("Heapsort: ");

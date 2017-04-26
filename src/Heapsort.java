@@ -95,19 +95,16 @@ public class Heapsort
    // Precondition: data is an array with at least n elements.
    // Postcondition: The elements of data have been rearranged so that the
    // complete binary tree represented by this array is a heap.
-   {      
+   {
 	   int k;
 	   for (int i = 0; i < n; i++) {
 		   //the index of the new element
 		   k = i;
-		   //data[k] not the root and
+		   //data[k] not yet the root (data[0]) and
 		   //data[k] bigger than its parent
-		   while ((data[k] != data[0]) && (data[k] > parent(k))) {
+		   while ((data[k] != data[0]) && (data[k] > data[parent(k)])) {
 			   //swap data[k] with its parent
-			   int tmp1 = data[k];
-			   int tmp2 = data[parent(k)];
-			   data[k] = tmp2;
-			   data[parent(k)] = tmp1;
+			   data[k] = data[parent(k)];
 			   //reset k to the index of its parent
 			   k = parent(k);
 		   }
@@ -123,26 +120,27 @@ public class Heapsort
    {
 	   //reheapification downward (for a heap where the root is out of place)
 	   int current;//index of the note that's moving down
-	   int bigChildIndex;//index of current's larger child
+	   int bigChildIndex = 0;//index of current's larger child
 	   boolean heapOK;//will become true when heap is correct
    
 	   current = 0;
-	   heapOK = false;
-	   int heapInd = data[n];
-   
-	   //TODO
-//	   while ((!heapOK) && (current != leaf)) {
-//			   //set bigChildIndex to be the index of larger child of the current
-//			   //node. (if there is only 1 child, then bigChildIndex will be set to
-//			   //the index of this 1 child)
-//			   
-//			   if (data[current] < data[bigChildIndex]) {
-//				   //swap data[current] and data[bigChildIndex
-//				   current = bigChildIndex;
-//			   } else {
-//				   heapOK = true;
-//			   }
-//		}
+	   heapOK = false; 
+
+	   while ((!heapOK) && (current != data.length)) {
+		   //set bigChildIndex to be the index of larger child of the current
+		   //node. (if there is only 1 child, then bigChildIndex will be set to
+		   //the index of this 1 child)
+		   if (data[bigChildIndex] > data[bigChildIndex + 1]) {
+			   bigChildIndex++;			  
+		   }
+			   
+		   if (data[current] < data[bigChildIndex]) {
+			   //swap data[current] and data[bigChildIndex}
+			   current = bigChildIndex;
+		   } else {
+			   heapOK = true;
+		   }
+		}
    }
    
    private static int parent(int k) {
