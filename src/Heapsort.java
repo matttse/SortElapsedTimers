@@ -34,6 +34,7 @@ public class Heapsort
       int i;                      // Array index
 
       int[ ] data = { 80, 10, 50, 70, 60, 90, 20, 30, 40, 0 };
+//      int[ ] data = { 10, 50, 70, 60, 90, 20, 30,  40, 0,  80  };
 
       // Print the array before sorting:
       System.out.println("Here is the entire original array:");
@@ -71,47 +72,27 @@ public class Heapsort
    * */
    public static void heapsort(int[ ] data, int n)
    {
-      int unsorted; // Size of the unsorted part of the array
-      int temp;     // Used during the swapping of two array locations
+	   makeHeap(data, n);
+       for (int i = n; i > 0; i--)
+       {
+    	   // Swap the largest element (data[0]) with the final element of unsorted part  
+    	   int temp = data[0];
+    	   data[0] = data[n-1];
+    	   data[n-1] = temp;
+           n = n-1;
+           reheapifyDown(data, 0);
+       }
 
-      makeHeap(data, n);
-
-      unsorted = n;
-
-      while (unsorted > 1)
-      {
-         unsorted--;
-
-         // Swap the largest element (data[0]) with the final element of unsorted part  
-         temp = data[0];
-         data[0] = data[unsorted];
-         data[unsorted] = temp;
-
-         reheapifyDown(data, unsorted);
-      }
    }
-   
    private static void makeHeap(int[ ] data, int n)
    // Precondition: data is an array with at least n elements.
    // Postcondition: The elements of data have been rearranged so that the
    // complete binary tree represented by this array is a heap.
    {
-	   int k, tmp;
-	   for (int i = 0; i < n; i++) {
-		   //the index of the new element
-		   k = i;
-		   //data[k] not yet the root (data[0]) and
-		   //data[k] bigger than its parent
-		   while (k != 0 && data[k] > data[parent(k)]) {
-			   //swap data[k] with its parent
-			   tmp = data[k];
-			   data[k] = data[parent(k)];
-			   data[parent(k)] = tmp;
-			   //reset k to the index of its parent
-			   k = parent(k);
-		   }
-	   }
-   }
+       n = data.length-1;
+       for (int i = n/2; i >= 0; i--)
+           reheapifyDown(data, i);        
+   } 
 
    private static void reheapifyDown(int[ ] data, int n)
    // Precondition: n > 0, and data is an array with at least n elements. These
@@ -120,40 +101,24 @@ public class Heapsort
    // Postcondition: The data values have been rearranged so that the first
    // n elements of data now form a heap.
    {
-	   //reheapification downward (for a heap where the root is out of place)
-	   int current;//index of the note that's moving down
-	   int bigChildIndex;//index of current's larger child
-	   boolean heapOK;//will become true when heap is correct
-	   
-	   current = 0;
-	   heapOK = false;
-	   //heapOK is false and
-	   //current node is not a leaf
-	   while (!heapOK && (leftChild(current) < n-1)) {
-		   //set bigChildIndex to be the index of larger child of the current
-		   //node. (if there is only 1 child, then bigChildIndex will be set to
-		   //the index of this 1 child)
-		   if (data[leftChild(current)] < data[rightChild(current)]) {
-			   bigChildIndex = rightChild(current);
-		   } else {
-			   bigChildIndex = leftChild(current);
-		   }
-		   
-		   
-		   if (data[current] < data[bigChildIndex]) {
-			   //swap data[current] and data[bigChildIndex}
-			   int tmp1 = data[bigChildIndex];
-			   int tmp2 = data[current];
-			   data[bigChildIndex] = tmp2;
-			   data[current] = tmp1;
-//			   System.out.println(data[bigChildIndex] + ", " + data[current]);
-			   System.out.println(tmp1 + ", " + tmp2);
-			   
-			   current = bigChildIndex;
-		   } else {
-			   heapOK = true;
-		   }
-	   }
+	   System.out.println("inside reheapifyDown n =" + n);
+       int left = leftChild(n);
+       int right = rightChild(n);
+       int max = n;
+       if (left <= n && data[left] > data[n])
+           max = left;
+       if (right <= n && data[right] > data[max])        
+           max = right;
+
+       if (max != n) {
+//           swap(data, n, max);
+           //Swap the child and parent's location
+           int temp = data[n];//Get the child
+           data[n] = data[max];//place the parent where the child was
+           data[max] = temp;//place the child where the parent was
+
+           reheapifyDown(data, max);
+       }
    }
    
    private static int leftChild(int k){
@@ -169,6 +134,14 @@ public class Heapsort
 	   // value is the index of the parent of node k
 	   
 	   return (k-1/2);
+   }
+   private static void swap(int[]data , int k, int parent_index) {
+
+       //Swap the child and parent's location
+       int child_data = data[k];//Get the child
+       data[k] = data[parent_index];//place the parent where the child was
+       data[parent_index] = child_data;//place the child where the parent was
+
    }
    
 }
