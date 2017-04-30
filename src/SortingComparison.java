@@ -2,7 +2,7 @@
 public class SortingComparison {
 
 	public static void main(String[] args) {
-		int numEle = 10;
+		int numEle = 100000;
 		int[] data = new int[numEle];
 		int upper = 1000000;
 		int lower = 1;
