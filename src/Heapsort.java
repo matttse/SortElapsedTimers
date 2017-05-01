@@ -120,6 +120,7 @@ public class Heapsort
    // location.
    // Postcondition: The data values have been rearranged so that the first
    // n elements of data now form a heap.
+	   //Additional Resource: https://www.toptal.com/developers/sorting-algorithms/heap-sort
 	   //reheapification down
        int current;//index of the note that's moving down
        int bigChildIndex = 0;//index of the current's larger child
