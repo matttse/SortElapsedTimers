@@ -1,14 +1,156 @@
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.text.DecimalFormat;
-
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.font.FontRenderContext;
+import java.awt.font.LineMetrics;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.*;
+import java.awt.font.*;
+import java.awt.geom.*;
+import javax.swing.*;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-public class SortingComparison {
-
+public class SortingComparison extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	final int PAD = 20;
+	  
+	//selection sort
+	public static long selectionSorting(int[] selectData) {
+		long startTime = System.currentTimeMillis();
+		Select.selectionsort(selectData, 0, selectData.length);
+		long endTime = System.currentTimeMillis();
+		long elapsedTime = endTime - startTime;
+//			System.out.print("Selection: ");
+//			System.out.println(elapsedTime);
+		return elapsedTime;
+	}
+	
+	//insertion sort
+	public static long insertionSorting(int[] insertData) {
+		long startTime = System.currentTimeMillis();
+		Insert.insertionsort(insertData, 0, insertData.length);
+		long endTime = System.currentTimeMillis();
+		long elapsedTime = endTime - startTime;
+//			System.out.print("Insertion: ");
+//			System.out.println(elapsedTime);	
+		return elapsedTime;
+	}
+	
+	//merge sort
+	public static long mergeSorting(int[] mergeData) {
+		long startTime = System.currentTimeMillis();
+		Mergesort.mergesort(mergeData, 0, mergeData.length);
+		long endTime = System.currentTimeMillis();
+		long elapsedTime = endTime - startTime;
+//			System.out.print("Merge: ");
+//			System.out.println(elapsedTime);
+		return elapsedTime;
+	}
+	
+	//quick sort
+	public static long quickSorting(int[] quickData) {
+		long startTime = System.currentTimeMillis();
+		Quicksort.quicksort(quickData, 1, quickData.length-2);
+		long endTime = System.currentTimeMillis();
+		long elapsedTime = endTime - startTime;
+		System.out.print("Quicksort: ");
+		System.out.println(elapsedTime);	
+		return elapsedTime;
+	}
+	
+	//heap sort
+	public static long heapSorting(int[] heapData) {
+		long startTime = System.currentTimeMillis();
+		Heapsort.heapsort(heapData, heapData.length);
+		long endTime = System.currentTimeMillis();
+		long elapsedTime = endTime - startTime;
+//			System.out.print("Heapsort: ");
+//			System.out.println(elapsedTime);
+		return elapsedTime;
+	}
+	
+	public static int[] generateData(int min, int max, int elements) {
+		int[] data = new int[elements];
+		for (int i = 0; i < elements; i++) {
+			data[i] = (int) (Math.random() * (max - min) + min);
+//				System.out.print(data[i]);
+//				System.out.print("\t");	
+//				if (i%2 == 1){
+//					System.out.print("\n");	
+//				}
+		}
+		return data;
+	}
+	public void paintComponent(Graphics g, int[] data) {
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D)g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+	                            RenderingHints.VALUE_ANTIALIAS_ON);
+        int w = getWidth();
+        int h = getHeight();
+        // Draw ordinate.
+        g2.draw(new Line2D.Double(PAD, PAD, PAD, h-PAD));
+        // Draw abcissa.
+        g2.draw(new Line2D.Double(PAD, h-PAD, w-PAD, h-PAD));
+        // Draw labels.
+        Font font = g2.getFont();
+        FontRenderContext frc = g2.getFontRenderContext();
+        LineMetrics lm = font.getLineMetrics("0", frc);
+        float sh = lm.getAscent() + lm.getDescent();
+        // Ordinate label.
+        String s = "data";
+        float sy = PAD + ((h - 2*PAD) - s.length()*sh)/2 + lm.getAscent();
+        for(int i = 0; i < s.length(); i++) {
+            String letter = String.valueOf(s.charAt(i));
+            float sw = (float)font.getStringBounds(letter, frc).getWidth();
+            float sx = (PAD - sw)/2;
+            g2.drawString(letter, sx, sy);
+            sy += sh;
+        }
+        // Abcissa label.
+        s = "x axis";
+        sy = h - PAD + (PAD - sh)/2 + lm.getAscent();
+        float sw = (float)font.getStringBounds(s, frc).getWidth();
+        float sx = (w - sw)/2;
+        g2.drawString(s, sx, sy);
+        // Draw lines.
+        double xInc = (double)(w - 2*PAD)/(data.length-1);
+        double scale = (double)(h - 2*PAD)/getMax(data);
+        g2.setPaint(Color.green.darker());
+        for(int i = 0; i < data.length-1; i++) {
+            double x1 = PAD + i*xInc;
+            double y1 = h - PAD - scale*data[i];
+            double x2 = PAD + (i+1)*xInc;
+            double y2 = h - PAD - scale*data[i+1];
+            g2.draw(new Line2D.Double(x1, y1, x2, y2));
+        }
+        // Mark data points.
+        g2.setPaint(Color.red);
+        for(int i = 0; i < data.length; i++) {
+            double x = PAD + i*xInc;
+            double y = h - PAD - scale*data[i];
+            g2.fill(new Ellipse2D.Double(x-2, y-2, 4, 4));
+        }
+    }
+ 
+    private int getMax(int[] data) {
+        int max = -Integer.MAX_VALUE;
+        for(int i = 0; i < data.length; i++) {
+            if(data[i] > max)
+                max = data[i];
+        }
+        return max;
+    }
 	public static void main(String[] args) {
 		int upper = 1000000;
 		int lower = 1;
@@ -231,83 +373,31 @@ public class SortingComparison {
 
 		};
 		String[] columnNames = {"n\nAlgorithms", "10000", "20000", "30000", "40000", "50000", "60000", "70000", "80000", "90000", "100000"};
-
+//		int[] data = {qTime1, qTime2, qTime3, qTime4 , qTime5, qTime6, qTime7, qTime8, qTime9, qTime10 };
+	    int[] data = {
+	            21, 14, 18, 03, 86, 88, 74, 87, 54, 77,
+	            61, 55, 48, 60, 49, 36, 38, 27, 20, 18
+	        };
 		JTable table = new JTable(tableData, columnNames);
 		JScrollPane scrollPane = new JScrollPane(table);
 		JFrame frame = new JFrame();
+//		Graphics g = new Graphics();
+		SortingComparison sc = new SortingComparison();
+//		sc.paintComponent(g, data);
 		frame.add(scrollPane, BorderLayout.CENTER);
-		frame.setSize(1000, 4000);
+//		frame.add(new GraphingData());
+		frame.setSize(1000, 500);
 		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-	}
-
-   
-	//selection sort
-	public static long selectionSorting(int[] selectData) {
-		long startTime = System.currentTimeMillis();
-		Select.selectionsort(selectData, 0, selectData.length);
-		long endTime = System.currentTimeMillis();
-		long elapsedTime = endTime - startTime;
-//		System.out.print("Selection: ");
-//		System.out.println(elapsedTime);
-		return elapsedTime;
-	}
-	
-	//insertion sort
-	public static long insertionSorting(int[] insertData) {
-		long startTime = System.currentTimeMillis();
-		Insert.insertionsort(insertData, 0, insertData.length);
-		long endTime = System.currentTimeMillis();
-		long elapsedTime = endTime - startTime;
-//		System.out.print("Insertion: ");
-//		System.out.println(elapsedTime);	
-		return elapsedTime;
-	}
-	
-	//merge sort
-	public static long mergeSorting(int[] mergeData) {
-		long startTime = System.currentTimeMillis();
-		Mergesort.mergesort(mergeData, 0, mergeData.length);
-		long endTime = System.currentTimeMillis();
-		long elapsedTime = endTime - startTime;
-//		System.out.print("Merge: ");
-//		System.out.println(elapsedTime);
-		return elapsedTime;
-	}
-	
-	//quick sort
-	public static long quickSorting(int[] quickData) {
-		long startTime = System.currentTimeMillis();
-		Quicksort.quicksort(quickData, 1, quickData.length-2);
-		long endTime = System.currentTimeMillis();
-		long elapsedTime = endTime - startTime;
-		System.out.print("Quicksort: ");
-		System.out.println(elapsedTime);	
-		return elapsedTime;
-	}
-	
-	//heap sort
-	public static long heapSorting(int[] heapData) {
-		long startTime = System.currentTimeMillis();
-		Heapsort.heapsort(heapData, heapData.length);
-		long endTime = System.currentTimeMillis();
-		long elapsedTime = endTime - startTime;
-//		System.out.print("Heapsort: ");
-//		System.out.println(elapsedTime);
-		return elapsedTime;
-	}
-	
-	public static int[] generateData(int min, int max, int elements) {
-		int[] data = new int[elements];
-		for (int i = 0; i < elements; i++) {
-			data[i] = (int) (Math.random() * (max - min) + min);
-//			System.out.print(data[i]);
-//			System.out.print("\t");	
-//			if (i%2 == 1){
-//				System.out.print("\n");	
-//			}
-		}
-		return data;
+		JFrame graph = new JFrame();
+        graph.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        sc.paintComponent();
+        graph.add(new GraphingData());
+        graph.setSize(400,400);
+        graph.setLocation(200,200);
+        graph.setVisible(true);
+		
 	}
 
 }
