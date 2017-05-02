@@ -1,23 +1,27 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.font.FontRenderContext;
+import java.awt.font.LineMetrics;
+import java.awt.geom.Line2D;
 import java.util.LinkedList;
 
 import javax.swing.*;
 
 public class SortingComparison extends JComponent {
-
+	
 	//selection sort
 	public static long selectionSorting(int[] selectData) {
 		long startTime = System.currentTimeMillis();
 		Select.selectionsort(selectData, 0, selectData.length);
 		long endTime = System.currentTimeMillis();
 		long elapsedTime = endTime - startTime;
-//			System.out.print("Selection: ");
-//			System.out.println(elapsedTime);
+
+		System.out.print("Selection: ");
+		System.out.println(elapsedTime);
 		return elapsedTime;
 	}
 	
@@ -27,8 +31,6 @@ public class SortingComparison extends JComponent {
 		Insert.insertionsort(insertData, 0, insertData.length);
 		long endTime = System.currentTimeMillis();
 		long elapsedTime = endTime - startTime;
-//			System.out.print("Insertion: ");
-//			System.out.println(elapsedTime);	
 		return elapsedTime;
 	}
 	
@@ -38,8 +40,6 @@ public class SortingComparison extends JComponent {
 		Mergesort.mergesort(mergeData, 0, mergeData.length);
 		long endTime = System.currentTimeMillis();
 		long elapsedTime = endTime - startTime;
-//			System.out.print("Merge: ");
-//			System.out.println(elapsedTime);
 		return elapsedTime;
 	}
 	
@@ -48,9 +48,7 @@ public class SortingComparison extends JComponent {
 		long startTime = System.currentTimeMillis();
 		Quicksort.quicksort(quickData, 1, quickData.length-2);
 		long endTime = System.currentTimeMillis();
-		long elapsedTime = endTime - startTime;
-		System.out.print("Quicksort: ");
-		System.out.println(elapsedTime);	
+		long elapsedTime = endTime - startTime;	
 		return elapsedTime;
 	}
 	
@@ -60,8 +58,6 @@ public class SortingComparison extends JComponent {
 		Heapsort.heapsort(heapData, heapData.length);
 		long endTime = System.currentTimeMillis();
 		long elapsedTime = endTime - startTime;
-//			System.out.print("Heapsort: ");
-//			System.out.println(elapsedTime);
 		return elapsedTime;
 	}
 	
@@ -69,11 +65,6 @@ public class SortingComparison extends JComponent {
 		int[] data = new int[elements];
 		for (int i = 0; i < elements; i++) {
 			data[i] = (int) (Math.random() * (max - min) + min);
-//				System.out.print(data[i]);
-//				System.out.print("\t");	
-//				if (i%2 == 1){
-//					System.out.print("\n");	
-//				}
 		}
 		return data;
 	}
@@ -81,12 +72,17 @@ public class SortingComparison extends JComponent {
 	public static void main(String[] args) {
 		int upper = 1000000;
 		int lower = 1;
+		int[] data1, data2, data3, data4, data5, data6, data7, data8, data9, data10;
 		Object sTime1, sTime2, sTime3, sTime4, sTime5, sTime6, sTime7, sTime8, sTime9, sTime10;
 		Object iTime1, iTime2, iTime3, iTime4, iTime5, iTime6, iTime7, iTime8, iTime9, iTime10;
 		Object mTime1, mTime2, mTime3, mTime4, mTime5, mTime6, mTime7, mTime8, mTime9, mTime10;
 		Object qTime1, qTime2, qTime3, qTime4, qTime5, qTime6, qTime7, qTime8, qTime9, qTime10;
 		Object hTime1, hTime2, hTime3, hTime4, hTime5, hTime6, hTime7, hTime8, hTime9, hTime10;
-		int[] data1, data2, data3, data4, data5, data6, data7, data8, data9, data10;
+		long[] selectionETime = new long[10];
+		long[] insertionETime = new long[10];
+		long[] mergeETime = new long[10];
+		long[] quickETime = new long[10];
+		long[] heapETime = new long[10];
 		
 		//10000
 		int numEle = 10000;
@@ -242,7 +238,7 @@ public class SortingComparison extends JComponent {
 		heapData = new int[numEle];
 		System.arraycopy(data8, 0, heapData, 0, numEle);		
 		
-		sTime8 = "1500";//Long.toString(selectionSorting(selectData));
+		sTime8 = Long.toString(selectionSorting(selectData));
 		iTime8 = Long.toString(insertionSorting(insertData));
 		mTime8 = Long.toString(mergeSorting(mergeData));
 		qTime8 = Long.toString(quickSorting(quickData));
@@ -262,13 +258,13 @@ public class SortingComparison extends JComponent {
 		heapData = new int[numEle];
 		System.arraycopy(data9, 0, heapData, 0, numEle);		
 		
-		sTime9 = "1600";//Long.toString(selectionSorting(selectData));
+		sTime9 = Long.toString(selectionSorting(selectData));
 		iTime9 = Long.toString(insertionSorting(insertData));
 		mTime9 = Long.toString(mergeSorting(mergeData));
 		qTime9 = Long.toString(quickSorting(quickData));
 		hTime9 = Long.toString(heapSorting(heapData));
 		
-		//1000000
+		//100000
 		numEle = 100000;
 		data10 = generateData(lower, upper, numEle);
 		selectData = new int[numEle];
@@ -282,8 +278,8 @@ public class SortingComparison extends JComponent {
 		heapData = new int[numEle];
 		System.arraycopy(data10, 0, heapData, 0, numEle);		
 		
-		sTime10 = "2000";//Long.toString(selectionSorting(selectData));
-		iTime10 = "1000";//Long.toString(insertionSorting(insertData));
+		sTime10 = Long.toString(selectionSorting(selectData));
+		iTime10 = Long.toString(insertionSorting(insertData));
 		mTime10 = Long.toString(mergeSorting(mergeData));
 		qTime10 = Long.toString(quickSorting(quickData));
 		hTime10 = Long.toString(heapSorting(heapData));
@@ -298,8 +294,7 @@ public class SortingComparison extends JComponent {
 
 		};
 		String[] columnNames = {"Algorithms", "10000", "20000", "30000", "40000", "50000", "60000", "70000", "80000", "90000", "100000"};
-//		int[] data = {qTime1, qTime2, qTime3, qTime4 , qTime5, qTime6, qTime7, qTime8, qTime9, qTime10 };
-	    
+	    //build table
 		JTable table = new JTable(tableData, columnNames);
 		JScrollPane scrollPane = new JScrollPane(table);
 		JFrame elapsedTimeTable = new JFrame();
@@ -308,39 +303,64 @@ public class SortingComparison extends JComponent {
 		elapsedTimeTable.setSize(700, 200);
 		elapsedTimeTable.setVisible(true);
 		elapsedTimeTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-  
-		JFrame graph = new JFrame();
-//		long[] time1 = new long[10];
-//		for (int i = 0; i < time1.length; i++) {
-//			time1[i] = Long.parseLong(String.valueOf(tableData[0][i+1]));	
-//		}
-//		long[] time2 = new long[10];
-//		for (int i = 0; i < time2.length; i++) {
-//			time2[i] = Long.parseLong(String.valueOf(tableData[1][i+1]));	
-//		}
-//		long[] time3 = new long[10];
-//		for (int i = 0; i < time3.length; i++) {
-//			time3[i] = Long.parseLong(String.valueOf(tableData[2][i+1]));	
-//		}
-//		long[] time4 = new long[10];
-//		for (int i = 0; i < time4.length; i++) {
-//			time4[i] = Long.parseLong(String.valueOf(tableData[3][i+1]));	
-//		}
-//		long[] time5 = new long[10];
-//		for (int i = 0; i < time5.length; i++) {
-//			time5[i] = Long.parseLong(String.valueOf(tableData[4][i+1]));	
-//		}
-		
-		
-		GraphingData gd = new GraphingData(tableData);
-		
-//		gd.main(columnNames);
-		graph.getContentPane().add(gd, BorderLayout.CENTER);
-        graph.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        graph.setSize(400,400);
-//        graph.setLocation(200,200);
-        graph.setVisible(true);
+		//create time arrays
+		for (int i = 0; i < selectionETime.length; i++) {
+			selectionETime[i] = Long.parseLong(String.valueOf(tableData[0][i+1]));
+			insertionETime[i] = Long.parseLong(String.valueOf(tableData[1][i+1]));
+			mergeETime[i] = Long.parseLong(String.valueOf(tableData[2][i+1]));
+			quickETime[i] = Long.parseLong(String.valueOf(tableData[3][i+1]));
+			heapETime[i] = Long.parseLong(String.valueOf(tableData[4][i+1]));
+		}  
+		//display elapsed time graphs
+		GraphingData gd = new GraphingData();
+		//selection
+		JFrame selectionGraph = new JFrame();
+		selectionGraph.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		selectionGraph.setSize(800, 800);
+        selectionGraph.setLocation(200,200);        
+        gd.setData(selectionETime);
+        selectionGraph.add(gd);
+        selectionGraph.setVisible(true);
+        //insertion
+		JFrame insertionGraph = new JFrame();
+		insertionGraph.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		insertionGraph.setSize(800, 800);
+		insertionGraph.setLocation(200,200);
+        gd = new GraphingData();
+        gd.setData(insertionETime);
+        insertionGraph.add(gd);
+        insertionGraph.setVisible(true);
+        //merge
+		JFrame mergeGraph = new JFrame();
+		mergeGraph.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mergeGraph.setSize(800, 800);
+		mergeGraph.setLocation(200,200);
+        gd = new GraphingData();
+        gd.setData(mergeETime);
+        mergeGraph.add(gd);
+        mergeGraph.setVisible(true);
+        //quicksort
+		JFrame quickGraph = new JFrame();
+		quickGraph.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		quickGraph.setSize(800, 800);
+		quickGraph.setLocation(200,200);
+        gd = new GraphingData();
+        gd.setData(quickETime);
+        quickGraph.add(gd);
+        quickGraph.setVisible(true);
+        //heapsort
+		JFrame heapGraph = new JFrame();
+		heapGraph.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		heapGraph.setSize(800, 800);
+		heapGraph.setLocation(200,200);
+        gd = new GraphingData();
+        gd.setData(heapETime);
+        heapGraph.add(gd);
+        heapGraph.setVisible(true);
+		 
 	}
+	
+	
 	
 	
 }

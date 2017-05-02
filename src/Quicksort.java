@@ -37,7 +37,8 @@ public class Quicksort
       final String BLANKS = "  "; // A String of two blanks
       int i;                      // Array index
 
-      int[ ] data = { 1000, 80, 10, 50, 70, 60, 90, 20, 30, 40, 0, -1000 };
+//      int[ ] data = { 1000, 80, 10, 50, 70, 60, 90, 20, 30, 40, 0, -1000 };
+      int[ ] data = {  80, 10, 50, 70, 60, 90, 20, 30, 40, 0 };
 
       // Print the array before sorting:
       System.out.println("Here is the entire original array:");
@@ -46,7 +47,8 @@ public class Quicksort
       System.out.println( );
 
       // Sort the numbers, and print the result with two blanks after each number.
-      quicksort(data, 1, data.length-2);
+//      quicksort(data, 1, data.length-2);
+      quicksort(data, 0, data.length);
       System.out.println("I have sorted all but the first and last numbers.");
       System.out.println("The numbers are now:");
       for (i = 0; i < data.length; i++)
