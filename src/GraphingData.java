@@ -1,16 +1,71 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.font.*;
 import java.awt.geom.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 import javax.swing.*;
  
 public class GraphingData extends JPanel {
     int[] data = {
-        21, 14, 18, 03, 86, 88, 74, 87, 54, 77,
-        61, 55, 48, 60, 49, 36, 38, 27, 20, 18
-    };
+            21, 14, 18, 03, 86, 88, 74, 87, 54, 77,
+            61, 55, 48, 60, 49, 36, 38, 27, 20, 18
+        };	
     final int PAD = 20;
- 
+    private final LinkedList<Line> lines = new LinkedList<Line>();
+    public static void build(Object[][] tableData) {//GraphingData(Object[][] tableData) {
+		long[] time1 = new long[10];
+		for (int i = 0; i < time1.length; i++) {
+			time1[i] = Long.parseLong(String.valueOf(tableData[0][i+1]));	
+		}
+		long[] time2 = new long[10];
+		for (int i = 0; i < time2.length; i++) {
+			time2[i] = Long.parseLong(String.valueOf(tableData[1][i+1]));	
+		}
+		long[] time3 = new long[10];
+		for (int i = 0; i < time3.length; i++) {
+			time3[i] = Long.parseLong(String.valueOf(tableData[2][i+1]));	
+		}
+		long[] time4 = new long[10];
+		for (int i = 0; i < time4.length; i++) {
+			time4[i] = Long.parseLong(String.valueOf(tableData[3][i+1]));	
+		}
+		long[] time5 = new long[10];
+		for (int i = 0; i < time5.length; i++) {
+			time5[i] = Long.parseLong(String.valueOf(tableData[4][i+1]));	
+		}
+	}
+    public GraphingData(Object[][] tableData) {
+		build(tableData);
+    }
+    private static class Line{
+        final int x1; 
+        final int y1;
+        final int x2;
+        final int y2;   
+        final Color color;
+
+        public Line(int x1, int y1, int x2, int y2, Color color) {
+            this.x1 = x1;
+            this.y1 = y1;
+            this.x2 = x2;
+            this.y2 = y2;
+            this.color = color;
+        }               
+    }
+    public void addLine(int x1, int x2, int x3, int x4) {
+        addLine(x1, x2, x3, x4, Color.black);
+    }
+
+    public void addLine(int x1, int x2, int x3, int x4, Color color) {
+        lines.add(new Line(x1,x2,x3,x4, color));        
+        repaint();
+    }
+
     protected void paintComponent(Graphics g) {
+    	
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -27,7 +82,7 @@ public class GraphingData extends JPanel {
         LineMetrics lm = font.getLineMetrics("0", frc);
         float sh = lm.getAscent() + lm.getDescent();
         // Ordinate label.
-        String s = "data";
+        String s = "Elapsed Time";
         float sy = PAD + ((h - 2*PAD) - s.length()*sh)/2 + lm.getAscent();
         for(int i = 0; i < s.length(); i++) {
             String letter = String.valueOf(s.charAt(i));
@@ -37,46 +92,48 @@ public class GraphingData extends JPanel {
             sy += sh;
         }
         // Abcissa label.
-        s = "x axis";
+        s = "Input Size";
         sy = h - PAD + (PAD - sh)/2 + lm.getAscent();
         float sw = (float)font.getStringBounds(s, frc).getWidth();
         float sx = (w - sw)/2;
         g2.drawString(s, sx, sy);
         // Draw lines.
-        double xInc = (double)(w - 2*PAD)/(data.length-1);
+        double xInc = (double)(w - 2*PAD)/(time1.length-1);
         double scale = (double)(h - 2*PAD)/getMax();
+        
         g2.setPaint(Color.green.darker());
-        for(int i = 0; i < data.length-1; i++) {
+        for(int i = 0; i < time1.length-1; i++) {
             double x1 = PAD + i*xInc;
-            double y1 = h - PAD - scale*data[i];
+            double y1 = h - PAD - scale*time1[i];
             double x2 = PAD + (i+1)*xInc;
-            double y2 = h - PAD - scale*data[i+1];
+            double y2 = h - PAD - scale*time1[i+1];
             g2.draw(new Line2D.Double(x1, y1, x2, y2));
         }
         // Mark data points.
-        g2.setPaint(Color.red);
-        for(int i = 0; i < data.length; i++) {
-            double x = PAD + i*xInc;
-            double y = h - PAD - scale*data[i];
-            g2.fill(new Ellipse2D.Double(x-2, y-2, 4, 4));
-        }
+//        g2.setPaint(Color.red);
+//        for(int i = 0; i < data.length; i++) {
+//            double x = PAD + i*xInc;
+//            double y = h - PAD - scale*data[i];
+//            g2.fill(new Ellipse2D.Double(x-2, y-2, 4, 4));
+//        }
     }
  
     private int getMax() {
         int max = -Integer.MAX_VALUE;
-        for(int i = 0; i < data.length; i++) {
+        for(int i = 0; i < 10; i++) {
             if(data[i] > max)
                 max = data[i];
         }
         return max;
     }
  
-    public static void main(String[] args) {
-        JFrame f = new JFrame();
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.add(new GraphingData());
-        f.setSize(400,400);
-        f.setLocation(200,200);
-        f.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//        JFrame f = new JFrame();
+//        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        f.add(new GraphingData());
+//        f.setSize(400,400);
+//        f.setLocation(200,200);
+//        f.setVisible(true);
+//    }
+
 }
